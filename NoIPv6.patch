@@ -1,0 +1,74 @@
+--- orig/etc/inc/services.inc	2020-02-12 15:41:29.737546000 +0100
++++ new/etc/inc/services.inc	2020-02-12 15:45:18.015517000 +0100
+@@ -24,8 +24,8 @@
+  */
+ 
+ 
+-define('DYNDNS_PROVIDER_VALUES', 'all-inkl azure azurev6 citynetwork cloudflare cloudflare-v6 cloudns custom custom-v6 digitalocean dnsexit dnsimple dnsmadeeasy dnsomatic dreamhost dreamhost-v6 duiadns duiadns-v6 dyndns dyndns-custom dyndns-static dyns easydns eurodns freedns freedns-v6 glesys godaddy godaddy-v6 googledomains gratisdns he-net he-net-v6 he-net-tunnelbroker hover loopia namecheap noip noip-free ods opendns ovh-dynhost route53 route53-v6 selfhost spdyn spdyn-v6 zoneedit');
+-define('DYNDNS_PROVIDER_DESCRIPTIONS', 'All-Inkl.com,Azure DNS,Azure DNS (v6),City Network,Cloudflare,Cloudflare (v6),ClouDNS,Custom,Custom (v6),DigitalOcean,DNSexit,DNSimple,DNS Made Easy,DNS-O-Matic,DreamHost,Dreamhost (v6),DuiaDns.net,DuiaDns.net (v6),DynDNS (dynamic),DynDNS (custom),DynDNS (static),DyNS,easyDNS,Euro Dns,freeDNS,freeDNS (v6),GleSYS,GoDaddy,GoDaddy (v6),Google Domains,GratisDNS,HE.net,HE.net (v6),HE.net Tunnelbroker,Hover,Loopia,Namecheap,No-IP,No-IP (free),ODS.org,OpenDNS,OVH DynHOST,Route 53,Route 53 (v6),SelfHost,SPDYN,SPDYN (v6),ZoneEdit');
++define('DYNDNS_PROVIDER_VALUES', 'all-inkl azure azurev6 citynetwork cloudflare cloudflare-v6 cloudns custom custom-v6 digitalocean dnsexit dnsimple dnsmadeeasy dnsomatic dreamhost dreamhost-v6 duiadns duiadns-v6 dyndns dyndns-custom dyndns-static dyns easydns eurodns freedns freedns-v6 glesys godaddy godaddy-v6 googledomains gratisdns he-net he-net-v6 he-net-tunnelbroker hover loopia namecheap noip noip-v6 noip-free noip-free-v6 ods opendns ovh-dynhost route53 route53-v6 selfhost spdyn spdyn-v6 zoneedit');
++define('DYNDNS_PROVIDER_DESCRIPTIONS', 'All-Inkl.com,Azure DNS,Azure DNS (v6),City Network,Cloudflare,Cloudflare (v6),ClouDNS,Custom,Custom (v6),DigitalOcean,DNSexit,DNSimple,DNS Made Easy,DNS-O-Matic,DreamHost,Dreamhost (v6),DuiaDns.net,DuiaDns.net (v6),DynDNS (dynamic),DynDNS (custom),DynDNS (static),DyNS,easyDNS,Euro Dns,freeDNS,freeDNS (v6),GleSYS,GoDaddy,GoDaddy (v6),Google Domains,GratisDNS,HE.net,HE.net (v6),HE.net Tunnelbroker,Hover,Loopia,Namecheap,No-IP,No-IP (v6),No-IP (free),No-IP (free-v6),ODS.org,OpenDNS,OVH DynHOST,Route 53,Route 53 (v6),SelfHost,SPDYN,SPDYN (v6),ZoneEdit');
+ 
+ /* implement ipv6 route advertising daemon */
+ function services_radvd_configure($blacklist = array()) {
+--- dyndns.class	2020-02-12 15:37:50.701551000 +0100
++++ dyndns.class	2020-02-12 16:41:44.486691000 +0100
+@@ -279,6 +279,8 @@
+ 				case 'dreamhost-v6':
+ 				case 'godaddy-v6':
+ 				case 'azurev6':
++				case 'noip-v6':
++				case 'noip-free-v6':
+ 					$this->_useIPv6 = true;
+ 					break;
+ 				default:
+@@ -329,7 +331,9 @@
+ 					case 'dyndns-custom':
+ 					case 'dhs':
+ 					case 'noip':
++					case 'noip-v6':
+ 					case 'noip-free':
++					case 'noip-free-v6':
+ 					case 'easydns':
+ 					case 'hn':
+ 					case 'zoneedit':
+@@ -488,6 +492,29 @@
+ 					curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
+ 					curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+ 					break;
++				case 'noip-v6':
++				case 'noip-free-v6':
++					$needsIP = TRUE;
++					$server = "https://dynupdate.no-ip.com/ducupdate.php";
++					$port = "";
++					if ($this->_dnsServer) {
++						$server = $this->_dnsServer;
++					}
++					if ($this->_dnsPort) {
++						$port = ":" . $this->_dnsPort;
++					}
++					if (($this->_dnsService == "noip-free-v6") &&
++					    ($this->_forceUpdateNeeded == true) &&
++					    ($this->_dnsDummyUpdateDone == false)) {
++						// Update the IP to a dummy value to force No-IP free accounts to see a change.
++						$iptoset = "fd00:d::1";
++						$this->_dnsDummyUpdateDone = true;
++						log_error(sprintf(gettext('Dynamic DNS %1$s (%2$s): Processing dummy update on No-IP free account. IP temporarily set to %3$s'), $this->_dnsService, $this->_dnsHost, $iptoset));
++					} else {
++						$iptoset = $this->_dnsIP;
++					}
++					curl_setopt($ch, CURLOPT_URL, $server . $port . '?username=' . urlencode($this->_dnsUser) . '&pass=' . urlencode($this->_dnsPass) . '&h[]=' . $this->_dnsHost.'&ipv6=' . $iptoset);
++					break;
+ 				case 'noip':
+ 				case 'noip-free':
+ 					$needsIP = TRUE;
+@@ -1445,7 +1472,9 @@
+ 				case 'dhs':
+ 					break;
+ 				case 'noip':
++				case 'noip-v6':
+ 				case 'noip-free':
++				case 'noip-free-v6':
+ 					list($ip, $code) = explode(":", $data);
+ 					switch ($code) {
+ 						case 0:
