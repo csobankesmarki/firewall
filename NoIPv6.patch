@@ -11,8 +11,8 @@
  
  /* implement ipv6 route advertising daemon */
  function services_radvd_configure($blacklist = array()) {
---- dyndns.class	2020-02-12 15:37:50.701551000 +0100
-+++ dyndns.class	2020-02-12 16:41:44.486691000 +0100
+--- orig/etc/inc/dyndns.class	2020-02-12 15:37:50.701551000 +0100
++++ new/etc/inc/dyndns.class	2020-02-12 16:41:44.486691000 +0100
 @@ -279,6 +279,8 @@
  				case 'dreamhost-v6':
  				case 'godaddy-v6':
