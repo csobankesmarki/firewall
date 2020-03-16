@@ -35,7 +35,7 @@ index c28994b773f..3d9d94e2080 100644
  					case 'godaddy':
  					case 'godaddy-v6':
  					case  'azure':
-@@ -1015,8 +1017,10 @@
+@@ -1015,8 +1018,10 @@
  					curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
  					break;
  				case 'digitalocean':
@@ -46,6 +46,15 @@ index c28994b773f..3d9d94e2080 100644
  					$url = $server . $this->_dnsDomain . '/records';
  					curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer {$this->_dnsPass}"));
  					curl_setopt($ch, CURLOPT_URL, $url);
+@@ -1027,7 +1032,7 @@
+ 					foreach($output->domain_records as $dnsRecord) {
+ 						// NS records are named @ in DO's API, so check type as well 
+ 						// https://redmine.pfsense.org/issues/9171
+-						if ($this->_dnsHost == $dnsRecord->name && $dnsRecord->type == 'A') {
++						if ($this->_dnsHost == $dnsRecord->name && $dnsRecord->type == ($isv6 ? 'AAAA' : 'A')) {
+ 							$recordID = $dnsRecord->id;
+ 							break;
+ 						}
 @@ -1040,7 +1045,7 @@
  						$url = $server . $this->_dnsDomain . '/records/' . $recordID;
  						curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -55,7 +64,7 @@ index c28994b773f..3d9d94e2080 100644
  					$post_data['ttl'] = $this->_dnsTTL;
  					$post_data['name'] = $this->_dnsHost;
  					$post_data['data'] = $this->_dnsIP;
-@@ -1876,6 +1891,7 @@
+@@ -1876,6 +1881,7 @@
  					}
  					break;
  				case 'digitalocean':
