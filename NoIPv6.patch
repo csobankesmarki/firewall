@@ -13,7 +13,7 @@
  function services_radvd_configure($blacklist = array()) {
 --- orig/src/etc/inc/dyndns.class	2020-02-12 15:37:50.701551000 +0100
 +++ new/src/etc/inc/dyndns.class	2020-02-12 16:41:44.486691000 +0100
-@@ -279,6 +279,8 @@
+@@ -292,6 +292,8 @@
  				case 'godaddy-v6':
  				case 'azurev6':
 				case 'linode-v6':
@@ -22,7 +22,7 @@
  					$this->_useIPv6 = true;
  					break;
  				default:
-@@ -329,7 +331,9 @@
+@@ -342,7 +344,9 @@
  					case 'dyndns-custom':
  					case 'dhs':
  					case 'noip':
@@ -32,7 +32,7 @@
  					case 'easydns':
  					case 'hn':
  					case 'zoneedit':
-@@ -488,6 +492,29 @@
+@@ -505,6 +509,29 @@
  					curl_setopt($ch, CURLOPT_USERPWD, $this->_dnsUser.':'.$this->_dnsPass);
  					curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
  					break;
@@ -62,7 +62,7 @@
  				case 'noip':
  				case 'noip-free':
  					$needsIP = TRUE;
-@@ -1445,7 +1472,9 @@
+@@ -1591,7 +1618,9 @@
  				case 'dhs':
  					break;
  				case 'noip':

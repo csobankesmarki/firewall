@@ -1,6 +1,6 @@
 --- old/src/etc/inc/services.inc	2020-03-17 18:55:25.044950000 +0100
 +++ new/src/etc/inc/services.inc	2020-03-17 18:54:24.178128000 +0100
-@@ -1610,6 +1610,7 @@
+@@ -1615,6 +1615,7 @@
  
  	if ($nsupdate) {
  		$dhcpdv6conf .= "ddns-update-style interim;\n";

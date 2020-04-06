@@ -1,0 +1,12 @@
+--- a/src/etc/inc/dyndns.class
++++ b/src/etc/inc/dyndns.class
+@@ -1054,7 +1054,7 @@
+ 					foreach($output->domain_records as $dnsRecord) {
+ 						// NS records are named @ in DO's API, so check type as well 
+ 						// https://redmine.pfsense.org/issues/9171
+-						if ($this->_dnsHost == $dnsRecord->name && $dnsRecord->type == 'A') {
++						if ($this->_dnsHost == $dnsRecord->name && $dnsRecord->type == ($isv6 ? 'AAAA' : 'A')) {
+ 							$recordID = $dnsRecord->id;
+ 							break;
+ 						}
+
