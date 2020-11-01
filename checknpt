@@ -1,0 +1,44 @@
+/*
+ * checknpt
+ *
+ * This script checks the actual NPT settings
+ * whether it is inline with tha actual
+ * IPv6 prefix that we got from the ISP.
+ *
+ */
+
+require_once("system.inc");
+require_once("interfaces.inc");
+require_once("pfsense-utils.inc");
+require_once("util.inc");
+require_once("inet6.inc");
+  
+global $config;
+$config = parse_config(true);
+
+$ifinfo = get_interface_info("lan");
+$ipaddrv6lan = $ifinfo['ipaddrv6'];
+
+$prefixv6isp = substr(inet6_expand($ipaddrv6lan),0,17);
+
+$prefixv6npts = array();
+$prefixv6npts[0] = array();
+$prefixv6npts[1] = array();
+
+$prefixv6npts[0]['check'] = inet6_compress($prefixv6isp."13::")."/64";
+$prefixv6npts[1]['check'] = inet6_compress($prefixv6isp."14::")."/64";
+
+$prefixv6npts[0]['config'] = $config['nat']['npt'][0]['destination']['address'];
+$prefixv6npts[1]['config'] = $config['nat']['npt'][1]['destination']['address'];
+
+foreach ($prefixv6npts as $prefixv6npt => $npt):
+  $nptdescr = $config['nat']['npt'][$prefixv6npt]['descr'];
+  if ($npt['check'] == $npt['config']) {
+    printf("NPT for '".$nptdescr."' destination prefix is correctly configured.\n");
+  } else {
+    printf("NPT for '".$nptdescr."' destination prefix is NOT correctly configured.\n");
+    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$npt['config']."\n");
+    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
+  }
+  endforeach;
+
