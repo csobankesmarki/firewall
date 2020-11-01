@@ -58,7 +58,7 @@ new file mode 100644
 index 0000000..95d8eff
 --- /dev/null
 +++ b/src/etc/phpshellsessions/fixnpt
-@@ -0,0 +1,54 @@
+@@ -0,0 +1,62 @@
 +/*
 + * checknpt
 + *
@@ -70,10 +70,11 @@ index 0000000..95d8eff
 +
 +require_once("system.inc");
 +require_once("interfaces.inc");
++require_once("filter.inc");
 +require_once("pfsense-utils.inc");
 +require_once("util.inc");
 +require_once("inet6.inc");
-+  
++
 +global $config;
 +$config = parse_config(true);
 +
@@ -104,6 +105,13 @@ index 0000000..95d8eff
 +      printf("Correcting NPT for '".$nptdescr."'...\n");
 +      $config['nat']['npt'][$prefixv6npt]['destination']['address'] = $npt['check'];
 +      write_config(sprintf(gettext("NPT for '%s' destination prefix changed from console."), $nptdescr));
++      $retval = 0;
++      $retval |= filter_configure();
++      if ($retval == 0) {
++        printf("Filter reloaded successfully.\n");
++      } else {
++        printf("Filter reload failed.\n");
++      }
 +      printf("Checking NPT settings for '".$nptdescr."'...\n");
 +      printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$config['nat']['npt'][$prefixv6npt]['destination']['address']."\n");
 +      printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
