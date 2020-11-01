@@ -46,9 +46,9 @@ index 0000000..4374f58
 +    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$npt['config']."\n");
 +    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
 +    if ($prefixv6isp != "") {
-+      printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.");
++      printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.\n");
 +    } else {
-+      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.");
++      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.\n");
 +    }
 +  }
 +  endforeach;
@@ -108,7 +108,7 @@ index 0000000..95d8eff
 +      printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$config['nat']['npt'][$prefixv6npt]['destination']['address']."\n");
 +      printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
 +    } else {
-+      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.");
++      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.\n");
 +    }
 +  }
 +  endforeach;

@@ -40,9 +40,9 @@ foreach ($prefixv6npts as $prefixv6npt => $npt):
     printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$npt['config']."\n");
     printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
     if ($prefixv6isp != "") {
-      printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.");
+      printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.\n");
     } else {
-      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.");
+      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.\n");
     }
   }
   endforeach;
