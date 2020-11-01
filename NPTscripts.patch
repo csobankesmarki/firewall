@@ -3,7 +3,7 @@ new file mode 100644
 index 0000000..4374f58
 --- /dev/null
 +++ b/src/etc/phpshellsessions/checknpt
-@@ -0,0 +1,44 @@
+@@ -0,0 +1,49 @@
 +/*
 + * checknpt
 + *
@@ -45,6 +45,11 @@ index 0000000..4374f58
 +    printf("NPT for '".$nptdescr."' destination prefix is NOT correctly configured.\n");
 +    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$npt['config']."\n");
 +    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
++    if ($prefixv6isp != "") {
++      printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.");
++    } else {
++      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.");
++    }
 +  }
 +  endforeach;
 +
@@ -53,7 +58,7 @@ new file mode 100644
 index 0000000..95d8eff
 --- /dev/null
 +++ b/src/etc/phpshellsessions/fixnpt
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,54 @@
 +/*
 + * checknpt
 + *
@@ -95,12 +100,16 @@ index 0000000..95d8eff
 +    printf("NPT for '".$nptdescr."' destination prefix is NOT correctly configured.\n");
 +    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$npt['config']."\n");
 +    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
-+    printf("Correcting NPT for '".$nptdescr."'...\n");
-+    $config['nat']['npt'][$prefixv6npt]['destination']['address'] = $npt['check'];
-+    write_config(sprintf(gettext("NPT for '%s' destination prefix changed from console."), $nptdescr));
-+    printf("Checking NPT settings for '".$nptdescr."'...\n");
-+    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$config['nat']['npt'][$prefixv6npt]['destination']['address']."\n");
-+    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
++    if ($prefixv6isp != "") {
++      printf("Correcting NPT for '".$nptdescr."'...\n");
++      $config['nat']['npt'][$prefixv6npt]['destination']['address'] = $npt['check'];
++      write_config(sprintf(gettext("NPT for '%s' destination prefix changed from console."), $nptdescr));
++      printf("Checking NPT settings for '".$nptdescr."'...\n");
++      printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$config['nat']['npt'][$prefixv6npt]['destination']['address']."\n");
++      printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
++    } else {
++      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.");
++    }
 +  }
 +  endforeach;
 +
