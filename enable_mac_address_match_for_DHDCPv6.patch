@@ -144,8 +144,16 @@ diff -Naur old/src/usr/local/www/services_dhcpv6_edit.php new/src/usr/local/www/
  	'*DUID',
 diff -Naur old/src/usr/local/www/status_dhcpv6_leases.php new/src/usr/local/www/status_dhcpv6_leases.php
 --- old/src/usr/local/www/status_dhcpv6_leases.php	2021-04-02 16:14:05.149671000 +0200
-+++ new/src/usr/local/www/status_dhcpv6_leases.php	2021-04-02 16:15:34.563243000 +0200
-@@ -336,7 +336,7 @@
++++ new/src/usr/local/www/status_dhcpv6_leases.php	2021-04-02 16:26:29.980099000 +0200
+@@ -171,6 +171,7 @@
+ 			$slease = array();
+ 			$slease['ip'] = $static['ipaddrv6'];
+ 			$slease['type'] = "static";
++			$slease['mac'] = $static['mac'];
+ 			$slease['duid'] = $static['duid'];
+ 			$slease['start'] = "";
+ 			$slease['end'] = "";
+@@ -336,7 +337,7 @@
  				<td><?=$data['ip']?></td>
  				<td><?=$data['iaid']?></td>
  				<td><?=$data['duid']?></td>
