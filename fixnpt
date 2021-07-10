@@ -25,12 +25,15 @@ $prefixv6isp = substr(inet6_expand($ipaddrv6lan),0,17);
 $prefixv6npts = array();
 $prefixv6npts[0] = array();
 $prefixv6npts[1] = array();
+$prefixv6npts[2] = array();
 
 $prefixv6npts[0]['check'] = inet6_compress($prefixv6isp."13::")."/64";
 $prefixv6npts[1]['check'] = inet6_compress($prefixv6isp."14::")."/64";
+$prefixv6npts[2]['check'] = inet6_compress($prefixv6isp."15::")."/64";
 
 $prefixv6npts[0]['config'] = $config['nat']['npt'][0]['destination']['address'];
 $prefixv6npts[1]['config'] = $config['nat']['npt'][1]['destination']['address'];
+$prefixv6npts[2]['config'] = $config['nat']['npt'][2]['destination']['address'];
 
 foreach ($prefixv6npts as $prefixv6npt => $npt):
   $nptdescr = $config['nat']['npt'][$prefixv6npt]['descr'];
