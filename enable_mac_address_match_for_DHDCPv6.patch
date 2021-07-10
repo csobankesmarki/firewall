@@ -86,7 +86,7 @@ diff -Naur old/src/usr/local/www/services_dhcpv6_edit.php new/src/usr/local/www/
  
 -		if ((($mapent['hostname'] == $_POST['hostname']) && $mapent['hostname']) || ($mapent['duid'] == $_POST['duid'])) {
 -			$input_errors[] = gettext("This Hostname, IP or DUID already exists.");
-+		if ((($mapent['hostname'] == $_POST['hostname']) && $mapent['hostname']) || (($mapent['mac'] == $_POST['mac']) && $mapent['mac']) || ($mapent['duid'] == $_POST['duid'])) {
++		if ((($mapent['hostname'] == $_POST['hostname']) && $mapent['hostname']) || (($mapent['mac'] == $_POST['mac']) && $mapent['mac']) || (($mapent['duid'] == $_POST['duid']) && $mapent['duid'])) {
 +			$input_errors[] = gettext("This Hostname, IP, MAC address or DUID already exists.");
  			break;
  		}
