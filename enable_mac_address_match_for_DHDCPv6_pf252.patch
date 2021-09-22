@@ -1,6 +1,6 @@
 diff -Naur old/src/etc/inc/services.inc new/src/etc/inc/services.inc
---- old/src/etc/inc/services.inc	2021-04-02 15:38:00.548909000 +0200
-+++ new/src/etc/inc/services.inc	2021-04-02 16:10:12.769883000 +0200
+--- old/src/etc/inc/services.inc	2021-04-02 16:10:12.769883000 +0200
++++ new/src/etc/inc/services.inc	2021-09-22 17:30:12.769883000 +0200
 @@ -1737,11 +1737,16 @@
  		if (is_array($dhcpv6ifconf['staticmap'])) {
  			$i = 0;
@@ -23,8 +23,8 @@ diff -Naur old/src/etc/inc/services.inc new/src/etc/inc/services.inc
  					$ipaddrv6 = $sm['ipaddrv6'];
  					if ($ifcfgv6['ipaddrv6'] == 'track6') {
 diff -Naur old/src/usr/local/www/services_dhcpv6.php new/src/usr/local/www/services_dhcpv6.php
---- old/src/usr/local/www/services_dhcpv6.php	2021-04-02 15:12:21.622072000 +0200
-+++ new/src/usr/local/www/services_dhcpv6.php	2021-04-02 15:28:06.419251000 +0200
+--- old/src/usr/local/www/services_dhcpv6.php	2021-04-02 15:28:06.419251000 +0200
++++ new/src/usr/local/www/services_dhcpv6.php	2021-09-22 17:30:06.419251000 +0200
 @@ -1085,6 +1085,7 @@
  		<table class="table table-striped table-hover table-condensed">
  			<thead>
@@ -44,8 +44,8 @@ diff -Naur old/src/usr/local/www/services_dhcpv6.php new/src/usr/local/www/servi
  					</td>
  					<td>
 diff -Naur old/src/usr/local/www/services_dhcpv6_edit.php new/src/usr/local/www/services_dhcpv6_edit.php
---- old/src/usr/local/www/services_dhcpv6_edit.php	2021-04-02 14:46:39.872442000 +0200
-+++ new/src/usr/local/www/services_dhcpv6_edit.php	2021-04-02 16:04:09.671372000 +0200
+--- old/src/usr/local/www/services_dhcpv6_edit.php	2021-04-02 16:04:09.671372000 +0200
++++ new/src/usr/local/www/services_dhcpv6_edit.php	2021-09-22 17:30:09.671372000 +0200
 @@ -69,6 +69,7 @@
  $id = $_REQUEST['id'];
  
@@ -143,8 +143,8 @@ diff -Naur old/src/usr/local/www/services_dhcpv6_edit.php new/src/usr/local/www/
  	'duid',
  	'*DUID',
 diff -Naur old/src/usr/local/www/status_dhcpv6_leases.php new/src/usr/local/www/status_dhcpv6_leases.php
---- old/src/usr/local/www/status_dhcpv6_leases.php	2021-04-02 16:14:05.149671000 +0200
-+++ new/src/usr/local/www/status_dhcpv6_leases.php	2021-04-02 16:26:29.980099000 +0200
+--- old/src/usr/local/www/status_dhcpv6_leases.php	2021-04-02 16:26:29.980099000 +0200
++++ new/src/usr/local/www/status_dhcpv6_leases.php	2021-09-22 17:30:29.980099000 +0200
 @@ -172,6 +172,7 @@
  			$slease = array();
  			$slease['ip'] = $static['ipaddrv6'];
