@@ -1,3 +1,4 @@
+//<?php
 /*
  * checknpt
  *
@@ -21,27 +22,19 @@ $ipaddrv6lan = $ifinfo['ipaddrv6'];
 
 $prefixv6isp = substr(inet6_expand($ipaddrv6lan),0,17);
 
-$prefixv6npts = array();
-$prefixv6npts[0] = array();
-$prefixv6npts[1] = array();
-$prefixv6npts[1] = array();
-
-$prefixv6npts[0]['check'] = inet6_compress($prefixv6isp."13::")."/64";
-$prefixv6npts[1]['check'] = inet6_compress($prefixv6isp."14::")."/64";
-$prefixv6npts[2]['check'] = inet6_compress($prefixv6isp."15::")."/64";
-
-$prefixv6npts[0]['config'] = $config['nat']['npt'][0]['destination']['address'];
-$prefixv6npts[1]['config'] = $config['nat']['npt'][1]['destination']['address'];
-$prefixv6npts[2]['config'] = $config['nat']['npt'][2]['destination']['address'];
-
-foreach ($prefixv6npts as $prefixv6npt => $npt):
+foreach ($config['nat']['npt'] as $prefixv6npt => $npt):
   $nptdescr = $config['nat']['npt'][$prefixv6npt]['descr'];
-  if ($npt['check'] == $npt['config']) {
+  $nptconfig = $config['nat']['npt'][$prefixv6npt]['destination']['address'];
+  $nptconfigs = explode("/",$nptconfig);
+  $nptconfigprefix = substr(inet6_expand($nptconfigs[0]),0,17);
+  $nptconfigsuffix = substr(inet6_expand($nptconfigs[0]),17,40);
+  $nptcheck = inet6_compress($prefixv6isp.$nptconfigsuffix)."/".$nptconfigs[1];
+  if ($nptcheck == $nptconfig) {
     printf("NPT for '".$nptdescr."' destination prefix is correctly configured.\n");
   } else {
     printf("NPT for '".$nptdescr."' destination prefix is NOT correctly configured.\n");
-    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$npt['config']."\n");
-    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$npt['check']."\n");
+    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$nptconfig."\n");
+    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$nptcheck."\n");
     if ($prefixv6isp != "") {
       printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.\n");
     } else {
@@ -50,3 +43,4 @@ foreach ($prefixv6npts as $prefixv6npt => $npt):
   }
   endforeach;
 
+//?>
