@@ -1,8 +1,8 @@
-diff --git a/checkcarp b/checkcarp
+diff --git a/src/etc/phpshellsessions/checkcarp b/src/etc/phpshellsessions/checkcarp
 new file mode 100644
 index 0000000..384f403
 --- /dev/null
-+++ b/checkcarp
++++ b/src/etc/phpshellsessions/checkcarp
 @@ -0,0 +1,46 @@
 +/*
 + * checkcarp
@@ -50,11 +50,11 @@ index 0000000..384f403
 +  }
 +  endforeach;
 +
-diff --git a/fixcarp b/fixcarp
+diff --git a/src/etc/phpshellsessions/fixcarp b/src/etc/phpshellsessions/fixcarp
 new file mode 100644
 index 0000000..10e0125
 --- /dev/null
-+++ b/fixcarp
++++ b/src/etc/phpshellsessions/fixcarp
 @@ -0,0 +1,62 @@
 +/*
 + * fixcarp
