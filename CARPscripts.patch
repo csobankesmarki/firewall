@@ -1,9 +1,10 @@
 diff --git a/src/etc/phpshellsessions/checkcarp b/src/etc/phpshellsessions/checkcarp
 new file mode 100644
-index 0000000..384f403
+index 0000000..c91fb93
 --- /dev/null
 +++ b/src/etc/phpshellsessions/checkcarp
-@@ -0,0 +1,46 @@
+@@ -0,0 +1,48 @@
++//<?php
 +/*
 + * checkcarp
 + *
@@ -50,18 +51,20 @@ index 0000000..384f403
 +  }
 +  endforeach;
 +
++//?>
+\ No newline at end of file
 diff --git a/src/etc/phpshellsessions/fixcarp b/src/etc/phpshellsessions/fixcarp
 new file mode 100644
-index 0000000..10e0125
+index 0000000..6e743cf
 --- /dev/null
 +++ b/src/etc/phpshellsessions/fixcarp
-@@ -0,0 +1,62 @@
+@@ -0,0 +1,63 @@
++//<?php
 +/*
 + * fixcarp
 + *
-+ * This script checks the actual CARP settings
-+ * whether it is inline with tha actual
-+ * IPv6 prefix that we got from the ISP.
++ * This script fixes the actual CARP settings
++ * to IPv6 prefix that we got from the ISP.
 + *
 + */
 +
@@ -118,3 +121,5 @@ index 0000000..10e0125
 +  }
 +  endforeach;
 +
++//?>
+\ No newline at end of file

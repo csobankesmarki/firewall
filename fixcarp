@@ -2,9 +2,8 @@
 /*
  * fixcarp
  *
- * This script checks the actual CARP settings
- * whether it is inline with tha actual
- * IPv6 prefix that we got from the ISP.
+ * This script fixes the actual CARP settings
+ * to IPv6 prefix that we got from the ISP.
  *
  */
 

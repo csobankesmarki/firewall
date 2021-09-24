@@ -1,10 +1,9 @@
 //<?php
 /*
- * checknpt
+ * fixnpt
  *
- * This script checks the actual NPT settings
- * whether it is inline with tha actual
- * IPv6 prefix that we got from the ISP.
+ * This script fixes the actual NPT settings
+ * to IPv6 prefix that we got from the ISP.
  *
  */
 
