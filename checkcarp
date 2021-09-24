@@ -1,0 +1,46 @@
+/*
+ * checkcarp
+ *
+ * This script checks the actual CARP settings
+ * whether it is inline with tha actual
+ * IPv6 prefix that we got from the ISP.
+ *
+ */
+
+require_once("system.inc");
+require_once("interfaces.inc");
+require_once("filter.inc");
+require_once("pfsense-utils.inc");
+require_once("util.inc");
+require_once("inet6.inc");
+  
+global $config;
+$config = parse_config(true);
+
+foreach ($config['virtualip']['vip'] as $vipnum => $vip):
+  $vipmode = $config['virtualip']['vip'][$vipnum]['mode'];
+  if ($vipmode == 'carp') {
+    $vipsubnet = $config['virtualip']['vip'][$vipnum]['subnet'];
+    if (is_ipaddrv6($vipsubnet)) {
+      $vipsubnetprefix = substr(inet6_expand($vipsubnet),0,20);
+      $vipsubnetsuffix = substr(inet6_expand($vipsubnet),20,40);
+      $vipif = $config['virtualip']['vip'][$vipnum]['interface'];
+      // printf("CARP on ".$vipif." IPV6: ".$vipsubnet." prefix: ".$vipsubnetprefix." suffix: ".$vipsubnetsuffix."\n");
+      $ifipaddrv6vip = get_interface_ipv6($vipif);
+      $ifipaddrv6vipprefix = substr(inet6_expand($ifipaddrv6vip),0,20);
+      // printf("Interface ".$vipif." IPV6: ".$ifipaddrv6vip." prefix: ".$ifipaddrv6vipprefix."\n");
+      $vipsubnetcorrect = inet6_compress($ifipaddrv6vipprefix.$vipsubnetsuffix);
+      if ($vipsubnet == $vipsubnetcorrect) {
+        printf("CARP #".$vipnum." on ".$vipif." has IPv6 address configured correctly.\n");
+        printf("Interface ".$vipif." IPv6 address is: ".$ifipaddrv6vip."\n");
+        printf("Actual CARP IPv6 address is: ".$vipsubnet."\n");
+      } else {
+        printf("CARP #".$vipnum." on ".$vipif." has IPv6 address NOT configured correctly.\n");
+        printf("Interface ".$vipif." IPv6 address is: ".$ifipaddrv6vip."\n");
+        printf("Actual CARP IPv6 address is: ".$vipsubnet.", ");
+        printf("correct CARP IPv6 address would be: ".$vipsubnetcorrect."\n");
+      }
+    }
+  }
+  endforeach;
+
