@@ -189,3 +189,4 @@ function int64_to_inet6($val)
 } // int64_to_inet6()
 
 // trailing PHP tag omitted to prevent accidental whitespace
+?>

@@ -23,22 +23,25 @@ $ipaddrv6lan = $ifinfo['ipaddrv6'];
 $prefixv6isp = substr(inet6_expand($ipaddrv6lan),0,17);
 
 foreach ($config['nat']['npt'] as $prefixv6npt => $npt):
-  $nptdescr = $config['nat']['npt'][$prefixv6npt]['descr'];
-  $nptconfig = $config['nat']['npt'][$prefixv6npt]['destination']['address'];
-  $nptconfigs = explode("/",$nptconfig);
-  $nptconfigprefix = substr(inet6_expand($nptconfigs[0]),0,17);
-  $nptconfigsuffix = substr(inet6_expand($nptconfigs[0]),17,40);
-  $nptcheck = inet6_compress($prefixv6isp.$nptconfigsuffix)."/".$nptconfigs[1];
-  if ($nptcheck == $nptconfig) {
-    printf("NPT for '".$nptdescr."' destination prefix is correctly configured.\n");
-  } else {
-    printf("NPT for '".$nptdescr."' destination prefix is NOT correctly configured.\n");
-    printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$nptconfig."\n");
-    printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$nptcheck."\n");
-    if ($prefixv6isp != "") {
-      printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.\n");
+  $nptif = $config['nat']['npt'][$prefixv6npt]['interface'];
+  if ($nptif == 'wan') {
+    $nptdescr = $config['nat']['npt'][$prefixv6npt]['descr'];
+    $nptconfig = $config['nat']['npt'][$prefixv6npt]['destination']['address'];
+    $nptconfigs = explode("/",$nptconfig);
+    $nptconfigprefix = substr(inet6_expand($nptconfigs[0]),0,17);
+    $nptconfigsuffix = substr(inet6_expand($nptconfigs[0]),17,40);
+    $nptcheck = inet6_compress($prefixv6isp.$nptconfigsuffix)."/".$nptconfigs[1];
+    if ($nptcheck == $nptconfig) {
+      printf("NPT for '".$nptdescr."' destination prefix is correctly configured.\n");
     } else {
-      printf("NPT ISP prefix is empty, correction is meaningless, ignoring.\n");
+      printf("NPT for '".$nptdescr."' destination prefix is NOT correctly configured.\n");
+      printf("NPT for '".$nptdescr."' destination prefix is configured to: ".$nptconfig."\n");
+      printf("NPT for '".$nptdescr."' destination prefix should be set to: ".$nptcheck."\n");
+      if ($prefixv6isp != "") {
+        printf("NPT ISP prefix is set, correction can be done via 'fixnpt' script.\n");
+      } else {
+        printf("NPT ISP prefix is empty, correction is meaningless, ignoring.\n");
+      }
     }
   }
   endforeach;
